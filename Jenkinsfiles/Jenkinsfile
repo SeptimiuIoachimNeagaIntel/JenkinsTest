@@ -28,6 +28,22 @@ pipeline {
                         sh "sed -n -e 's/^.*project\\(.*\\)/\\1/p' CMakeLists.txt"
                         sh "sed -n -e 's/^.*project(vpux_emulator.*VERSION *\\(.*\\))/\\1/p' CMakeLists.txt"
                         sh "echo BUILD_VERSION = ${env.BUILD_VERSION};"
+                        script {
+                            def VERSION_MAJOR = sh (
+                                script: "sed -n -e 's/^.*VERSION_MAJOR \\\"\\(.*\\)\\\".*/\\1/p' CMakeLists2.txt",
+                                returnStdout: true).trim()
+                            def VERSION_MINOR = sh (
+                                script: "sed -n -e 's/^.*VERSION_MINOR \\\"\\(.*\\)\\\".*/\\1/p' CMakeLists2.txt",
+                                returnStdout: true).trim()
+                            def VERSION_PATCH = sh (
+                                script: "sed -n -e 's/^.*VERSION_PATCH \\\"\\(.*\\)\\\".*/\\1/p' CMakeLists2.txt",
+                                returnStdout: true).trim()
+                            env.BUILD_VERSION = "${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}"
+                            env.BUILD_NUMBER   = sh (
+                                        script: "date +'%Y%m%d.%H%M%S'_\${GIT_COMMIT:0:8}",
+                                        returnStdout: true).trim()
+                        }
+                        sh "echo BUILD_VERSION = ${env.BUILD_VERSION};"
                     }
                 }
             }
