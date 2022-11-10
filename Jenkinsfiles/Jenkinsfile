@@ -29,7 +29,7 @@ pipeline {
                         sh "sed -n -e 's/^.*project(vpux_emulator.*VERSION *\\(.*\\))/\\1/p' CMakeLists.txt"
                         sh "echo BUILD_VERSION = ${env.BUILD_VERSION};"
                         script {
-                            def VERSION_MINOR = sh (
+                            def env.VERSION_MINOR = sh (
                                 script: "sed -n -e 's/^.*VERSION_MINOR \\\"\\(.*\\)\\\".*/\\1/p' CMakeLists2.txt",
                                 returnStdout: true).trim()
                             def VERSION_PATCH = sh (
@@ -44,6 +44,7 @@ pipeline {
                                         returnStdout: true).trim()
                         }
                         sh "echo BUILD_VERSION = ${env.BUILD_VERSION};"
+                        sh "echo VERSION_MINOR = ${env.VERSION_MINOR};"
                     }
                 }
             }
