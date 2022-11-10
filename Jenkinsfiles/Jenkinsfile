@@ -2,85 +2,30 @@
 
 
 pipeline {
-    agent {
-        kubernetes (
-            cloud: 'kubi-linux',
-            inheritFrom: 'default',
-            containerTemplates: [
-                containerTemplate(
-                    name: 'openvino',
-                    image: 'ger-registry.caas.intel.com/movitools/nntools:openvino_1.8',
-                    command: 'cat',
-                    resourceRequestCpu: '8',
-                    resourceLimitCpu: '8',
-                    resourceLimitMemory: '32Gi',
-                    ttyEnabled: true
-                ),
-                containerTemplate(
-                    name: 'gcov',
-                    image: 'ger-registry.caas.intel.com/movitools/nntools:gcov_1.2',
-                    command: 'cat',
-                    resourceRequestCpu: '0',
-                    resourceLimitCpu: '4',
-                    resourceLimitMemory: '1Gi',
-                    ttyEnabled: true
-                ),
-                containerTemplate(
-                    name: 'testdistro',
-                    image: 'ger-registry.caas.intel.com/movitools/testdistro:ubuntu20.04_10',
-                    command: 'cat',
-                    resourceRequestCpu: '0',
-                    resourceLimitCpu: '4',
-                    resourceLimitMemory: '1Gi',
-                    ttyEnabled: true
-                ),
-            ]
-        )
-    }
-    triggers {
-        githubPullRequests( abortRunning: true,
-                    cancelQueued: true,
-                    events: [commitChanged(), Open()],
-                    preStatus: true,
-                    repoProviders: [githubPlugin(cacheConnection: false, manageHooks: false, repoPermission: 'PUSH')],
-                    spec: 'H/30 * * * *',
-                    triggerMode: 'HEAVY_HOOKS_CRON')
-        githubBranches( abortRunning: true,
-                            cancelQueued: true,
-                            events:[hashChanged(), commit(), branchCreated()],
-                            preStatus: true,
-                            repoProviders: [githubPlugin(cacheConnection: false, manageHooks: false, repoPermission: 'PUSH')],
-                            spec: 'H/30 * * * *',
-                            triggerMode: 'HEAVY_HOOKS_CRON')
-    }
-    options {
-        ansiColor('xterm')
-        timestamps()
-        buildDiscarder logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '', daysToKeepStr: '14', numToKeepStr: '14')
-        disableConcurrentBuilds()
-        timeout(time: 12, unit: 'HOURS')
-        durabilityHint 'PERFORMANCE_OPTIMIZED'
-        copyArtifactPermission('*')
-        //githubProjectProperty('https://github.com/intel-innersource/applications.ai.vpu-accelerators.vpux-emulator/')
-    }
-    environment {
-        PROJECT_NAME = "vpux-plugin"
-        ARTIFACT = "${env.PROJECT_NAME}"
-        AF_TOKEN = credentials("CID-sys_mtbuild-af01p_ir-key_text")
-        PYTHONUNBUFFERED = 1
-        ARTIFACTORY_URL = "https://af01p-ir.devtools.intel.com/artifactory"
-        ARTIFACTORY_KEY = credentials("CID-sys_mtbuild-af01p_ir-key_text")
-        JFROG_CLI_OFFER_CONFIG = false
-        JFROG_DL_ARGS = "--sort-by=created --sort-order=desc --limit=1 --explode --flat"
-        GIT_LFS_SKIP_SMUDGE=1
-        GIT_TRACE=1
-    }
     stages {
         stage('Get version') {
             steps {
                 container('jnlp') {
                     dir ("${env.WORKSPACE}") {
                         sh "ls -lrta ."
+                        sh "sed -n -e 's/^.*project\\(.*\\)/\\1/p' vpux_emulator/CMakeLists.txt"
+                        sh "sed -n -e 's/^.*project(vpux_emulator.*VERSION *\\(.*\\))/\\1/p' vpux_emulator/CMakeLists.txt"
+                        script {
+                            def VERSION_MAJOR = sh (
+                                script: "sed -n -e 's/^.*VERSION_MAJOR \\\"\\(.*\\)\\\".*/\\1/p' vpux_emulator/CMakeLists2.txt",
+                                returnStdout: true).trim()
+                            def VERSION_MINOR = sh (
+                                script: "sed -n -e 's/^.*VERSION_MINOR \\\"\\(.*\\)\\\".*/\\1/p' vpux_emulator/CMakeLists2.txt",
+                                returnStdout: true).trim()
+                            def VERSION_PATCH = sh (
+                                script: "sed -n -e 's/^.*VERSION_PATCH \\\"\\(.*\\)\\\".*/\\1/p' vpux_emulator/CMakeLists2.txt",
+                                returnStdout: true).trim()
+                            env.BUILD_VERSION = "${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}"
+                            env.BUILD_NUMBER   = sh (
+                                        script: "date +'%Y%m%d.%H%M%S'_\${GIT_COMMIT:0:8}",
+                                        returnStdout: true).trim()
+                        }
+                        sh "echo BUILD_VERSION = ${env.BUILD_VERSION};"
                     }
                 }
             }
