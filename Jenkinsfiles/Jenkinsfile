@@ -36,7 +36,7 @@ pipeline {
                                 script: "sed -n -e 's/^.*VERSION_PATCH \\\"\\(.*\\)\\\".*/\\1/p' CMakeLists2.txt",
                                 returnStdout: true).trim()
                             def VERSION_MAJOR = sh (
-                                script: "sed -n -e 's/^.*project(vpux_emulator.*VERSION *\\(.*\\))/\\1/p' vpux_emulator/CMakeLists.txt",
+                                script: "sed -n -e 's/^.*project(vpux_emulator.*VERSION *\\(.*\\))/\\1/p' CMakeLists.txt",
                                 returnStdout: true).trim()
                             env.BUILD_VERSION = "${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}"
                             env.BUILD_NUMBER   = sh (
