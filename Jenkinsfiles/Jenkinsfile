@@ -15,25 +15,7 @@ pipeline {
                     resourceLimitCpu: '8',
                     resourceLimitMemory: '32Gi',
                     ttyEnabled: true
-                ),
-                containerTemplate(
-                    name: 'gcov',
-                    image: 'ger-registry.caas.intel.com/movitools/nntools:gcov_1.2',
-                    command: 'cat',
-                    resourceRequestCpu: '0',
-                    resourceLimitCpu: '4',
-                    resourceLimitMemory: '1Gi',
-                    ttyEnabled: true
-                ),
-                containerTemplate(
-                    name: 'testdistro',
-                    image: 'ger-registry.caas.intel.com/movitools/testdistro:ubuntu20.04_10',
-                    command: 'cat',
-                    resourceRequestCpu: '0',
-                    resourceLimitCpu: '4',
-                    resourceLimitMemory: '1Gi',
-                    ttyEnabled: true
-                ),
+                )
             ]
         )
     }
@@ -43,8 +25,8 @@ pipeline {
                 container('jnlp') {
                     dir ("${env.WORKSPACE}") {
                         sh "ls -lrta ."
-                        sh "sed -n -e 's/^.*project\\(.*\\)/\\1/p' vpux_emulator/CMakeLists.txt"
-                        sh "sed -n -e 's/^.*project(vpux_emulator.*VERSION *\\(.*\\))/\\1/p' vpux_emulator/CMakeLists.txt"
+                        sh "sed -n -e 's/^.*project\\(.*\\)/\\1/p' CMakeLists.txt"
+                        sh "sed -n -e 's/^.*project(vpux_emulator.*VERSION *\\(.*\\))/\\1/p' CMakeLists.txt"
                         sh "echo BUILD_VERSION = ${env.BUILD_VERSION};"
                     }
                 }
