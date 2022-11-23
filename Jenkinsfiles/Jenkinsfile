@@ -1,3 +1,6 @@
+@Library('ToolsPipelineLib') _
+
+
 pipeline {
     agent {
         kubernetes (
@@ -32,6 +35,8 @@ pipeline {
             steps {
                 container('jnlp') {
                     dir ("${env.WORKSPACE}") {
+                        sh "git init ."
+                        sh "git --version"
                         sh "ls -lrta"
                     }
                 }
