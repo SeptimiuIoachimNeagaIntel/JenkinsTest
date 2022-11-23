@@ -1,6 +1,3 @@
-@Library('ToolsPipelineLib') _
-
-
 pipeline {
     agent {
         kubernetes (
