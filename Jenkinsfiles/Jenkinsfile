@@ -19,6 +19,14 @@ pipeline {
             ]
         )
     }
+    environment {
+        AF_TOKEN = credentials("CID-sys_mtbuild-af01p_ir-key_text")
+        PYTHONUNBUFFERED = 1
+        ARTIFACTORY_URL = "https://af01p-ir.devtools.intel.com/artifactory"
+        ARTIFACTORY_KEY = credentials("CID-sys_mtbuild-af01p_ir-key_text")
+        SSH_KEY = credentials("CID-1Source-SSH-Test")
+        JFROG_CLI_OFFER_CONFIG = false
+    }
     options {
         ansiColor('xterm')
         timestamps()
@@ -35,10 +43,14 @@ pipeline {
             steps {
                 container('jnlp') {
                     dir ("${env.WORKSPACE}") {
+                        sh "env"
+                        sh "env | grep ARTIFACTORY_KEY"
+                        sh "env | grep SSH_KEY"
                         sh "git init ."
                         sh "git --version"
                         sh "git clone git@github.com:SeptimiuIoachimNeagaIntel/JenkinsTest.git" 
                         sh "ls -lrta"
+                        
                     }
                 }
             }
