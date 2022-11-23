@@ -19,32 +19,23 @@ pipeline {
             ]
         )
     }
+    options {
+        ansiColor('xterm')
+        timestamps()
+        buildDiscarder logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '', daysToKeepStr: '14', numToKeepStr: '14')
+        disableConcurrentBuilds()
+        timeout(time: 12, unit: 'HOURS')
+        durabilityHint 'PERFORMANCE_OPTIMIZED'
+        copyArtifactPermission('*')
+        checkoutToSubdirectory('vpux_emulator')
+        parallelsAlwaysFailFast()
+    }
     stages {
         stage('Get version') {
             steps {
                 container('jnlp') {
                     dir ("${env.WORKSPACE}") {
-                        sh "ls -lrta ."
-                        sh "sed -n -e 's/^.*project\\(.*\\)/\\1/p' CMakeLists.txt"
-                        sh "sed -n -e 's/^.*project(vpux_emulator.*VERSION *\\(.*\\))/\\1/p' CMakeLists.txt"
-                        sh "echo BUILD_VERSION = ${env.BUILD_VERSION};"
-                        script {
-                            def env.VERSION_MINOR = sh (
-                                script: "sed -n -e 's/^.*VERSION_MINOR \\\"\\(.*\\)\\\".*/\\1/p' CMakeLists2.txt",
-                                returnStdout: true).trim()
-                            def VERSION_PATCH = sh (
-                                script: "sed -n -e 's/^.*VERSION_PATCH \\\"\\(.*\\)\\\".*/\\1/p' CMakeLists2.txt",
-                                returnStdout: true).trim()
-                            def VERSION_MAJOR = sh (
-                                script: "sed -n -e 's/^.*project(vpux_emulator.*VERSION *\\(.*\\))/\\1/p' CMakeLists.txt",
-                                returnStdout: true).trim()
-                            env.BUILD_VERSION = "${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}"
-                            env.BUILD_NUMBER   = sh (
-                                        script: "date +'%Y%m%d.%H%M%S'_\${GIT_COMMIT:0:8}",
-                                        returnStdout: true).trim()
-                        }
-                        sh "echo BUILD_VERSION = ${env.BUILD_VERSION};"
-                        sh "echo VERSION_MINOR = ${env.VERSION_MINOR};"
+                        sh "ls -lrta"
                     }
                 }
             }
