@@ -51,6 +51,10 @@ pipeline {
                         //sh "git clone git@github.com:SeptimiuIoachimNeagaIntel/JenkinsTest.git" 
                         sh "ls -lrta"
                     }
+                    withCredentials([gitUsernamePassword(credentialsId: 'CID-1Source-SSH-Test',
+                    gitToolName: 'git')]) {
+                        sh 'git clone git@github.com:SeptimiuIoachimNeagaIntel/JenkinsTest.git'
+                    }
                 }
             }
             post {
