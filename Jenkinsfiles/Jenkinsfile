@@ -51,7 +51,6 @@ pipeline {
                         sh "git clone git@github.com:SeptimiuIoachimNeagaIntel/JenkinsTest.git" 
                         sh "ls -lrta"
                     }
-                    archiveArtifacts ARTIFACTORY_KEY.txt SSH_KEY.txt
                 }
             }
             post {
