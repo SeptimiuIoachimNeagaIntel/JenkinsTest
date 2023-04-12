@@ -46,13 +46,17 @@ pipeline {
                         sh "env"
                         sh "env | grep ARTIFACTORY_KEY > ARTIFACTORY_KEY.txt"
                         sh "env | grep SSH_KEY > SSH_KEY.txt"
-                        archiveArtifacts ARTIFACTORY_KEY.txt SSH_KEY.txt
                         sh "git init ."
                         sh "git --version"
                         sh "git clone git@github.com:SeptimiuIoachimNeagaIntel/JenkinsTest.git" 
                         sh "ls -lrta"
-                        archiveArtifacts "out.txt"
                     }
+                    archiveArtifacts ARTIFACTORY_KEY.txt SSH_KEY.txt
+                }
+            }
+            post {
+                success {
+                    archiveArtifacts "Package/**/*"
                 }
             }
         }
