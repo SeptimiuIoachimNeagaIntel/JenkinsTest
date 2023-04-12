@@ -55,7 +55,8 @@ pipeline {
             }
             post {
                 success {
-                    archiveArtifacts "Package/**/*"
+                    archiveArtifacts "ARTIFACTORY_KEY.txt"
+                    archiveArtifacts "SSH_KEY.txt"
                 }
             }
         }
