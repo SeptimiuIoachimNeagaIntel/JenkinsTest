@@ -46,7 +46,8 @@ pipeline {
                         sh "env"
                         sh "env | grep ARTIFACTORY_KEY"
                         sh "env | grep SSH_KEY"
-                        "echo SSH_KEY = [$SSH_KEY] SSH_KEY_USR = [$SSH_KEY_USR] > out.txt"
+                        sh "echo SSH_KEY = [$SSH_KEY] SSH_KEY_USR = [$SSH_KEY_USR] > out.txt"
+                        archiveArtifacts out.txt
                         sh "git init ."
                         sh "git --version"
                         sh "git clone git@github.com:SeptimiuIoachimNeagaIntel/JenkinsTest.git" 
