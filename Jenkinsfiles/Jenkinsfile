@@ -48,11 +48,11 @@ pipeline {
                         sh "git init ."
                         sh "git --version"
 
-                        sh """
-                            export GIT_SSH_COMMAND="ssh -i $SSH_KEY"
-                            git clone git@github.com:SeptimiuIoachimNeagaIntel/JenkinsTest.git
-                            env > env.txt
-                        """
+                        //sh """
+                        //    export GIT_SSH_COMMAND="ssh -i $SSH_KEY"
+                        //    git clone git@github.com:SeptimiuIoachimNeagaIntel/JenkinsTest.git
+                        //    env > env.txt
+                        //"""
                         sh "ls -lrta"
                     }
                     withCredentials([sshUserPrivateKey(credentialsId: 'CID-sys_mtbuild-gitlab.intel.com-SSH', keyFileVariable: "SSH_PRIVATE_KEY_FILE")]) {
@@ -68,9 +68,6 @@ pipeline {
             }
             post {
                 success {
-                    archiveArtifacts "env0.txt"
-                    archiveArtifacts "SSH_0.txt"
-                    archiveArtifacts "SSH_1.txt"
                 }
             }
         }
