@@ -53,13 +53,10 @@ pipeline {
                         sh "ls -lrta"
                     }
                     withCredentials([sshUserPrivateKey(credentialsId: 'CID-sys_mtbuild-gitlab.intel.com-SSH', keyFileVariable: "SSH_PRIVATE_KEY_FILE")]) {
-                        sh "echo 'Hello World'"
+                        sh "env > env0.txt"
                         withEnv(["GIT_SSH_COMMAND=${env.SSH_PRIVATE_KEY_FILE}"]) {
-                            sh "echo 'Hello World2'"
+                            sh "env > env1.txt"
                         }
-                    }
-                    withEnv(["GIT_SSH_COMMAND=${env.SSH_KEY}"]) {
-                        sh "echo 'Hello World'"
                     }
                     //withCredentials([sshUserPrivateKey(credentialsId: 'CID-sys_mtbuild-gitlab.intel.com-SSH', keyFileVariable: "SSH_PRIVATE_KEY_FILE")]) {
                     //    //sh "env | grep SSH_ > SSH_0.txt"
@@ -70,6 +67,12 @@ pipeline {
                     //        sh "ls -lrta"
                     //    }
                     //}
+                }
+            }
+            post {
+                success {
+                    archiveArtifacts "env0.txt"
+                    archiveArtifacts "env1.txt"
                 }
             }
         }
