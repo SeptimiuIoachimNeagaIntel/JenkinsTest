@@ -24,7 +24,6 @@ pipeline {
         PYTHONUNBUFFERED = 1
         ARTIFACTORY_URL = "https://af01p-ir.devtools.intel.com/artifactory"
         ARTIFACTORY_KEY = credentials("CID-sys_mtbuild-af01p_ir-key_text")
-        SSH_KEY = 
         JFROG_CLI_OFFER_CONFIG = false
     }
     options {
