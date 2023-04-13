@@ -44,9 +44,6 @@ pipeline {
                 container('jnlp') {
                     dir ("${env.WORKSPACE}") {
                         sh "env > env0.txt"
-                        
-                        sh "git init ."
-                        sh "git --version"
 
                         //sh """
                         //    export GIT_SSH_COMMAND="ssh -i $SSH_KEY"
@@ -54,6 +51,9 @@ pipeline {
                         //    env > env.txt
                         //"""
                         sh "ls -lrta"
+                    }
+                    withCredentials([sshUserPrivateKey(credentialsId: 'CID-sys_mtbuild-gitlab.intel.com-SSH', keyFileVariable: "SSH_PRIVATE_KEY_FILE")]) {
+                        sh "echo 'Hello World'"
                     }
                     withCredentials([sshUserPrivateKey(credentialsId: 'CID-sys_mtbuild-gitlab.intel.com-SSH', keyFileVariable: "SSH_PRIVATE_KEY_FILE")]) {
                         //sh "env | grep SSH_ > SSH_0.txt"
