@@ -41,7 +41,7 @@ pipeline {
         stage('Get version') {
             environment {
                 SSH_PRIVATE_KEY_FILE=credentials("CID-1Source-SSH-Test")
-                GIT_SSH_COMMAND="ssh -i ${env.SSH_PRIVATE_KEY_FILE}"
+                GIT_SSH_COMMAND="ssh -i `credentials("CID-1Source-SSH-Test")`"
             }
             steps {
                 container('jnlp') {
