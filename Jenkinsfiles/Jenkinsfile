@@ -58,15 +58,15 @@ pipeline {
                     withEnv(["GIT_SSH_COMMAND=${env.SSH_KEY}"]) {
                         sh "echo 'Hello World'"
                     }
-                    withCredentials([sshUserPrivateKey(credentialsId: 'CID-sys_mtbuild-gitlab.intel.com-SSH', keyFileVariable: "SSH_PRIVATE_KEY_FILE")]) {
-                        //sh "env | grep SSH_ > SSH_0.txt"
-                        withEnv(["GIT_SSH_COMMAND=${env.SSH_PRIVATE_KEY_FILE}]") {
-                            sh "rm -rf JenkinsTest"
-                            sh "ls -lrta"
-                            sh 'git clone git@github.com:SeptimiuIoachimNeagaIntel/JenkinsTest.git'
-                            sh "ls -lrta"
-                        }
-                    }
+                    //withCredentials([sshUserPrivateKey(credentialsId: 'CID-sys_mtbuild-gitlab.intel.com-SSH', keyFileVariable: "SSH_PRIVATE_KEY_FILE")]) {
+                    //    //sh "env | grep SSH_ > SSH_0.txt"
+                    //    withEnv(["GIT_SSH_COMMAND=${env.SSH_PRIVATE_KEY_FILE}]") {
+                    //        sh "rm -rf JenkinsTest"
+                    //        sh "ls -lrta"
+                    //        sh 'git clone git@github.com:SeptimiuIoachimNeagaIntel/JenkinsTest.git'
+                    //        sh "ls -lrta"
+                    //    }
+                    //}
                 }
             }
         }
