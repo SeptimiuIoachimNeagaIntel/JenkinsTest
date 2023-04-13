@@ -55,7 +55,7 @@ pipeline {
                         """
                         sh "ls -lrta"
                     }
-                    withCredentials([sshUserPrivateKey(credentialsId: 'CID-1Source-SSH-Test', keyFileVariable: "SSH_PRIVATE_KEY_FILE")]) {
+                    withCredentials([sshUserPrivateKey(credentialsId: 'CID-sys_mtbuild-gitlab.intel.com-SSH', keyFileVariable: "SSH_PRIVATE_KEY_FILE")]) {
                         //sh "env | grep SSH_ > SSH_0.txt"
                         withEnv([GIT_SSH_COMMAND=${env.MOVIASM_STAGING_DIR}])
                             //sh "env | grep SSH_ > SSH_1.txt"
