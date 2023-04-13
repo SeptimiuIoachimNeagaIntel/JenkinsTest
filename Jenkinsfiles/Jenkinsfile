@@ -44,7 +44,7 @@ pipeline {
                 container('jnlp') {
                     dir ("${env.WORKSPACE}") {
                         sh "env > env0.txt"
-                        sh "env | grep SSH_KEY > SSH_KEY.txt"
+                        
                         sh "git init ."
                         sh "git --version"
 
@@ -56,9 +56,9 @@ pipeline {
                         sh "ls -lrta"
                     }
                     withCredentials([sshUserPrivateKey(credentialsId: 'CID-1Source-SSH-Test', keyFileVariable: "SSH_PRIVATE_KEY_FILE")]) {
-                        sh "env > env1.txt"
+                        sh "env | grep SSH_ > SSH_0.txt"
                         withEnv([GIT_SSH_COMMAND=${env.MOVIASM_STAGING_DIR}])
-                            sh "env > env2.txt"
+                            sh "env | grep SSH_ > SSH_1.txt"
                             sh "rm -rf JenkinsTest"
                             sh 'git clone git@github.com:SeptimiuIoachimNeagaIntel/JenkinsTest.git'
                     }
@@ -67,8 +67,8 @@ pipeline {
             post {
                 success {
                     archiveArtifacts "env0.txt"
-                    archiveArtifacts "env1.txt"
-                    archiveArtifacts "env2.txt"
+                    archiveArtifacts "SSH_0.txt"
+                    archiveArtifacts "SSH_1.txt"
                 }
             }
         }
