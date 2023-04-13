@@ -57,8 +57,10 @@ pipeline {
                     }
                     withCredentials([sshUserPrivateKey(credentialsId: 'CID-1Source-SSH-Test', keyFileVariable: "SSH_PRIVATE_KEY_FILE")]) {
                         sh "env > env1.txt"
-                        sh "rm -rf JenkinsTest"
-                        sh 'git clone git@github.com:SeptimiuIoachimNeagaIntel/JenkinsTest.git'
+                        withEnv([GIT_SSH_COMMAND=${env.MOVIASM_STAGING_DIR}])
+                            sh "env > env2.txt"
+                            sh "rm -rf JenkinsTest"
+                            sh 'git clone git@github.com:SeptimiuIoachimNeagaIntel/JenkinsTest.git'
                     }
                 }
             }
@@ -66,6 +68,7 @@ pipeline {
                 always {
                     archiveArtifacts "env0.txt"
                     archiveArtifacts "env1.txt"
+                    archiveArtifacts "env2.txt"
                 }
             }
         }
