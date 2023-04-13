@@ -65,8 +65,7 @@ pipeline {
             post {
                 success {
                     archiveArtifacts "env0.txt"
-                    archiveArtifacts "SSH_KEY.txt"
-                    archiveArtifacts "env.txt"
+                    archiveArtifacts "env1.txt"
                 }
             }
         }
