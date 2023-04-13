@@ -65,7 +65,7 @@ pipeline {
                 }
             }
             post {
-                always {
+                success {
                     archiveArtifacts "env0.txt"
                     archiveArtifacts "env1.txt"
                     archiveArtifacts "env2.txt"
