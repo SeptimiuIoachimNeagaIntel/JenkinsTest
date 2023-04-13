@@ -46,9 +46,15 @@ pipeline {
                         sh "env"
                         sh "env | grep ARTIFACTORY_KEY > ARTIFACTORY_KEY.txt"
                         sh "env | grep SSH_KEY > SSH_KEY.txt"
+                        sh "env | grep GIT_SSH_COMMAND > GIT_SSH_COMMAND.txt"
                         sh "git init ."
                         sh "git --version"
-                        //sh "git clone git@github.com:SeptimiuIoachimNeagaIntel/JenkinsTest.git" 
+
+                        sh """
+                            export GIT_SSH_COMMAND="ssh -i $SSH_KEY"
+                            git clone git@github.com:SeptimiuIoachimNeagaIntel/JenkinsTest.git
+                            env > env.txt
+                        """
                         sh "ls -lrta"
                     }
                     //withCredentials([gitUsernamePassword(credentialsId: 'CID-1Source-SSH-Test',
@@ -61,6 +67,8 @@ pipeline {
                 success {
                     archiveArtifacts "ARTIFACTORY_KEY.txt"
                     archiveArtifacts "SSH_KEY.txt"
+                    archiveArtifacts "GIT_SSH_COMMAND.txt"
+                    archiveArtifacts "env.txt"
                 }
             }
         }
