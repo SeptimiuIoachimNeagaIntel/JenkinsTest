@@ -46,7 +46,6 @@ pipeline {
                         sh "env"
                         sh "env | grep ARTIFACTORY_KEY > ARTIFACTORY_KEY.txt"
                         sh "env | grep SSH_KEY > SSH_KEY.txt"
-                        sh "env | grep GIT_SSH_COMMAND > GIT_SSH_COMMAND.txt"
                         sh "git init ."
                         sh "git --version"
 
