@@ -53,10 +53,11 @@ pipeline {
                 GIT_SSH_COMMAND="ssh -i ${env.SSH_PRIVATE_KEY_FILE}"
             }
             steps {
-                container('buildtools') {
+                //container('buildtools') {
+                container('jnlp') {
                     sh "ls -lrta"
-                    sh "cmake --version"
                     sh 'git clone git@github.com:SeptimiuIoachimNeagaIntel/JenkinsTest.git'
+                    sh "cmake --version"
                     sh "ls -lrta"
                     sh "cmake -B build ProjectFiles"
                     sh "ls -lrta"
