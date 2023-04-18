@@ -15,7 +15,16 @@ pipeline {
                     resourceLimitCpu: '8',
                     resourceLimitMemory: '32Gi',
                     ttyEnabled: true
-                )
+                ),
+                containerTemplate(
+                    name: 'buildtools',
+                    image: 'ger-registry.caas.intel.com/movitools/buildtools:5.2_centos7',
+                    command: 'cat',
+                    resourceLimitCpu: '2',
+                    resourceRequestMemory: '1Gi',
+                    resourceLimitMemory: '4Gi',
+                    ttyEnabled: true
+                ),
             ]
         )
     }
