@@ -46,6 +46,7 @@ pipeline {
             steps {
                 container('buildtools') {
                     sh "ls -lrta"
+                    sh "cmake --version"
                     sh 'git clone git@github.com:SeptimiuIoachimNeagaIntel/JenkinsTest.git'
                     sh "ls -lrta"
                     sh "cmake -B build ProjectFiles"
