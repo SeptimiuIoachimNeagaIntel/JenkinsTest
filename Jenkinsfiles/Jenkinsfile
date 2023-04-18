@@ -49,6 +49,8 @@ pipeline {
                     sh "ls -lrta"
                     sh 'git clone git@github.com:SeptimiuIoachimNeagaIntel/JenkinsTest.git'
                     sh "ls -lrta"
+                    sh "cmake -B build"
+                    sh "ls -lrta"
                 }
             }
         }
