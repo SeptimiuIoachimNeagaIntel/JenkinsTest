@@ -46,7 +46,6 @@ pipeline {
         checkoutToSubdirectory('ProjectFiles')
     }
     stages {
-        failFast false
         parallel {
             stage('Get module buildtools') {
                 environment {
