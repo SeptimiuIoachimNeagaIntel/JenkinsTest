@@ -47,6 +47,7 @@ pipeline {
     }
     stages {
         stage('Get module') {
+            failFast false
             parallel {
                 stage('Get module buildtools') {
                     environment {
@@ -56,7 +57,7 @@ pipeline {
                     steps {
                         container('buildtools') {
                             sh "ls -lrta"
-                            sh "cat SSH_PRIVATE_KEY_FILE"
+                            sh "cat ${env.SSH_PRIVATE_KEY_FILE}"
                             sh "git --version"
                             sh 'git clone git@github.com:SeptimiuIoachimNeagaIntel/JenkinsTest.git'
                             sh "ls -lrta"
@@ -73,7 +74,7 @@ pipeline {
                     steps {
                         container('buildtools') {
                             sh "ls -lrta"
-                            sh "cat SSH_PRIVATE_KEY_FILE"
+                            sh "cat ${env.SSH_PRIVATE_KEY_FILE}"
                             sh "git --version"
                             sh 'git clone git@github.com:SeptimiuIoachimNeagaIntel/JenkinsTest.git'
                             sh "ls -lrta"
