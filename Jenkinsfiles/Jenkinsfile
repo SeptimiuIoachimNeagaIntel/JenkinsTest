@@ -58,6 +58,10 @@ pipeline {
                         container('buildtools') {
                             sh "ls -lrta"
                             sh "cat ${env.SSH_PRIVATE_KEY_FILE}"
+                            sh "which ssh"
+                            sh "which git"
+                            sh "ssh"
+                            sh "git clone --help"
                             sh "git --version"
                             sh 'git clone git@github.com:SeptimiuIoachimNeagaIntel/JenkinsTest.git'
                             sh "ls -lrta"
@@ -75,6 +79,10 @@ pipeline {
                         container('jnlp') {
                             sh "ls -lrta"
                             sh "cat ${env.SSH_PRIVATE_KEY_FILE}"
+                            sh "which ssh"
+                            sh "which git"
+                            sh "ssh"
+                            sh "git clone --help"
                             sh "git --version"
                             sh 'git clone git@github.com:SeptimiuIoachimNeagaIntel/JenkinsTest.git'
                             sh "ls -lrta"
