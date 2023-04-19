@@ -46,38 +46,40 @@ pipeline {
         checkoutToSubdirectory('ProjectFiles')
     }
     stages {
-        parallel {
-            stage('Get module buildtools') {
-                environment {
-                    SSH_PRIVATE_KEY_FILE=credentials("CID-1Source-SSH-Test")
-                    GIT_SSH_COMMAND="ssh -i ${env.SSH_PRIVATE_KEY_FILE}"
-                }
-                steps {
-                    container('buildtools') {
-                        sh "ls -lrta"
-                        sh "cat SSH_PRIVATE_KEY_FILE"
-                        sh "git --version"
-                        sh 'git clone git@github.com:SeptimiuIoachimNeagaIntel/JenkinsTest.git'
-                        sh "ls -lrta"
-                        sh "cmake -B build ProjectFiles"
-                        sh "ls -lrta"
+        stage('Get module) {
+            parallel {
+                stage('Get module buildtools') {
+                    environment {
+                        SSH_PRIVATE_KEY_FILE=credentials("CID-1Source-SSH-Test")
+                        GIT_SSH_COMMAND="ssh -i ${env.SSH_PRIVATE_KEY_FILE}"
+                    }
+                    steps {
+                        container('buildtools') {
+                            sh "ls -lrta"
+                            sh "cat SSH_PRIVATE_KEY_FILE"
+                            sh "git --version"
+                            sh 'git clone git@github.com:SeptimiuIoachimNeagaIntel/JenkinsTest.git'
+                            sh "ls -lrta"
+                            sh "cmake -B build ProjectFiles"
+                            sh "ls -lrta"
+                        }
                     }
                 }
-            }
-            stage('Get module jnlp') {
-                environment {
-                    SSH_PRIVATE_KEY_FILE=credentials("CID-1Source-SSH-Test")
-                    GIT_SSH_COMMAND="ssh -i ${env.SSH_PRIVATE_KEY_FILE}"
-                }
-                steps {
-                    container('buildtools') {
-                        sh "ls -lrta"
-                        sh "cat SSH_PRIVATE_KEY_FILE"
-                        sh "git --version"
-                        sh 'git clone git@github.com:SeptimiuIoachimNeagaIntel/JenkinsTest.git'
-                        sh "ls -lrta"
-                        sh "cmake -B build ProjectFiles"
-                        sh "ls -lrta"
+                stage('Get module jnlp') {
+                    environment {
+                        SSH_PRIVATE_KEY_FILE=credentials("CID-1Source-SSH-Test")
+                        GIT_SSH_COMMAND="ssh -i ${env.SSH_PRIVATE_KEY_FILE}"
+                    }
+                    steps {
+                        container('buildtools') {
+                            sh "ls -lrta"
+                            sh "cat SSH_PRIVATE_KEY_FILE"
+                            sh "git --version"
+                            sh 'git clone git@github.com:SeptimiuIoachimNeagaIntel/JenkinsTest.git'
+                            sh "ls -lrta"
+                            sh "cmake -B build ProjectFiles"
+                            sh "ls -lrta"
+                        }
                     }
                 }
             }
