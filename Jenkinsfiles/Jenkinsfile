@@ -60,6 +60,7 @@ pipeline {
                             sh "cat ${env.SSH_PRIVATE_KEY_FILE}"
                             sh "which ssh"
                             sh "ls -lrta /usr/bin/ssh"
+                            sh "id
                             sh "which git"
                             sh "ssh"
                             sh "git clone --help"
@@ -82,6 +83,7 @@ pipeline {
                             sh "cat ${env.SSH_PRIVATE_KEY_FILE}"
                             sh "which ssh"
                             sh "ls -lrta /usr/bin/ssh"
+                            sh "id"
                             sh "which git"
                             sh "ssh"
                             sh "git clone --help"
