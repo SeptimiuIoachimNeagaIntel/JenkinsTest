@@ -72,7 +72,7 @@ pipeline {
                         GIT_SSH_COMMAND="ssh -i ${env.SSH_PRIVATE_KEY_FILE}"
                     }
                     steps {
-                        container('buildtools') {
+                        container('jnlp') {
                             sh "ls -lrta"
                             sh "cat ${env.SSH_PRIVATE_KEY_FILE}"
                             sh "git --version"
