@@ -44,23 +44,42 @@ pipeline {
         durabilityHint 'PERFORMANCE_OPTIMIZED'
         copyArtifactPermission('*')
         checkoutToSubdirectory('ProjectFiles')
-        parallelsAlwaysFailFast()
     }
     stages {
-        stage('Get version') {
-            environment {
-                SSH_PRIVATE_KEY_FILE=credentials("CID-1Source-SSH-Test")
-                GIT_SSH_COMMAND="ssh -i ${env.SSH_PRIVATE_KEY_FILE}"
+        failFast false
+        parallel {
+            stage('Get module buildtools') {
+                environment {
+                    SSH_PRIVATE_KEY_FILE=credentials("CID-1Source-SSH-Test")
+                    GIT_SSH_COMMAND="ssh -i ${env.SSH_PRIVATE_KEY_FILE}"
+                }
+                steps {
+                    container('buildtools') {
+                        sh "ls -lrta"
+                        sh "cat SSH_PRIVATE_KEY_FILE"
+                        sh "git --version"
+                        sh 'git clone git@github.com:SeptimiuIoachimNeagaIntel/JenkinsTest.git'
+                        sh "ls -lrta"
+                        sh "cmake -B build ProjectFiles"
+                        sh "ls -lrta"
+                    }
+                }
             }
-            steps {
-                container('buildtools') {
-                //container('jnlp') {
-                    sh "ls -lrta"
-                    sh "git --version"
-                    sh 'git clone git@github.com:SeptimiuIoachimNeagaIntel/JenkinsTest.git'
-                    sh "ls -lrta"
-                    sh "cmake -B build ProjectFiles"
-                    sh "ls -lrta"
+            stage('Get module jnlp') {
+                environment {
+                    SSH_PRIVATE_KEY_FILE=credentials("CID-1Source-SSH-Test")
+                    GIT_SSH_COMMAND="ssh -i ${env.SSH_PRIVATE_KEY_FILE}"
+                }
+                steps {
+                    container('buildtools') {
+                        sh "ls -lrta"
+                        sh "cat SSH_PRIVATE_KEY_FILE"
+                        sh "git --version"
+                        sh 'git clone git@github.com:SeptimiuIoachimNeagaIntel/JenkinsTest.git'
+                        sh "ls -lrta"
+                        sh "cmake -B build ProjectFiles"
+                        sh "ls -lrta"
+                    }
                 }
             }
         }
