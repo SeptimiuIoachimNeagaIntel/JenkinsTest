@@ -46,7 +46,7 @@ pipeline {
         checkoutToSubdirectory('ProjectFiles')
     }
     stages {
-        stage('Get module) {
+        stage('Get module') {
             parallel {
                 stage('Get module buildtools') {
                     environment {
